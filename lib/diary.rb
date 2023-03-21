@@ -3,13 +3,11 @@ class Diary
     @entry_list = []
   end
 
-  def add(entry) # entry is an instance of DiaryEntry
-    # Returns nothing
+  def add(entry) # entry is an instance of diaryEntry class
     @entry_list << entry
   end
 
   def all
-    # Returns a list of instances of DiaryEntry
     @entry_list
   end
 
@@ -17,24 +15,32 @@ class Diary
     total = 0
     @entry_list.each do |entry|
       total += entry.count_words
-    end    
-    # Returns the number of words in all diary entries
-    # HINT: This method should make use of the `count_words` method on DiaryEntry.
+    end
+    total    
+    # @entry_list.sum(&:count_words)
   end
 
-  def reading_time(wpm) # wpm is an integer representing
-                        # the number of words the user can read per minute
-    # Returns an integer representing an estimate of the reading time in minutes
-    # if the user were to read all entries in the diary.
+  def reading_time_diary(wpm)
+    fail "wpm must be a positive number." if wpm == 0 
+    (count_words_diary / wpm.to_f).ceil
   end
 
-  def find_best_entry_for_reading_time(wpm, minutes)
-        # `wpm` is an integer representing the number of words the user can read
-        # per minute.
-        # `minutes` is an integer representing the number of minutes the user
-        # has to read.
-    # Returns an instance of diary entry representing the entry that is closest 
-    # to, but not over, the length that the user could read in the minutes they
-    # have available given their reading speed.
+  def find_best_entry_for_reading_time(wpm, minutes) # `wpm` = words/minute , minutes` = num of minutes user has to read
+    best_entry = nil
+    closest_best_entry = 0
+
+    # selects and returns a new array with readable entries
+    readable_entries = @entry_list.select do |entry|
+      entry.reading_time(wpm) <= minutes
+    end
+  
+    readable_entries.each do |entry|
+      if entry.count_words > closest_best_entry
+        best_entry = entry
+        closest_best_entry = entry.count_words
+      end
+
+    end
+    best_entry
   end
 end
