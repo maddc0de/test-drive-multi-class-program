@@ -36,4 +36,52 @@ RSpec.describe DiaryEntry do
     end
   end
 
+  describe "reading_chunk method" do
+    it "returns all contents when reading time is 1 minute" do
+      text = "hello" * 60
+      diary_entry = DiaryEntry.new("day 1", text)
+      expect(diary_entry.reading_chunk(60, 1)).to eq text
+    end
+  
+    it "returns the next 60 words when reading_chunk is called the 2nd time" do
+      text = ("hello " * 60) + ("world " * 60)
+      expected_result = "world " * 60
+      diary_entry = DiaryEntry.new("day 1", text)
+      result_1 = diary_entry.reading_chunk(60, 1)
+      result_2 = diary_entry.reading_chunk(60, 1)
+      expect(result_2).to eq expected_result.rstrip
+    end
+  
+    it "returns the first 60 words when reading_chunk is called the 3rd time" do
+      text = ("hello " * 60) + ("world " * 60)
+      expected_result = "hello " * 60
+      diary_entry = DiaryEntry.new("day 1", text)
+      result_1 = diary_entry.reading_chunk(60, 1)
+      result_2 = diary_entry.reading_chunk(60, 1)
+      result_3 = diary_entry.reading_chunk(60, 1)
+      expect(result_3).to eq expected_result.rstrip
+    end
+  
+    it "returns the first 10 words when reading_chunk is called the 3rd time" do
+      text = ("hello " * 60) + ("world " * 70)
+      expected_result = "world " * 10
+      diary_entry = DiaryEntry.new("day 1", text)
+      result_1 = diary_entry.reading_chunk(60, 1)
+      result_2 = diary_entry.reading_chunk(60, 1)
+      result_3 = diary_entry.reading_chunk(60, 1)
+      expect(result_3).to eq expected_result.rstrip
+    end
+  
+    it "returns the first 60 hellos when reading_chunk is called the 4th time" do
+      text = ("hello " * 60) + ("world " * 70)
+      expected_result = "hello " * 60
+      diary_entry = DiaryEntry.new("day 1", text)
+      result_1 = diary_entry.reading_chunk(60, 1)
+      result_2 = diary_entry.reading_chunk(60, 1)
+      result_3 = diary_entry.reading_chunk(60, 1)
+      result_4 = diary_entry.reading_chunk(60, 1)
+      expect(result_4).to eq expected_result.rstrip
+    end
+  end
+
 end

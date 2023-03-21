@@ -2,6 +2,8 @@ class DiaryEntry
   def initialize(title, contents) # title, contents are strings
     @title = title
     @contents = contents
+    @contents_words = contents.split(" ")
+    @counter = 0
   end
 
   def title
@@ -22,7 +24,16 @@ class DiaryEntry
     (count_words / wpm.to_f).ceil
   end
 
-  def reading_chunk(wpm, minutes) # `wpm` = words/minute , minutes` = num of minutes user has to read
+  def reading_chunk(wpm, minutes) 
+    string_to_return = @contents_words[@counter...@counter+(wpm * minutes)].join(" ")
+    if @counter + (wpm * minutes) >= @contents_words.length
+      @counter = 0
+    else
+      @counter += (wpm * minutes)
+    end
+
+      string_to_return
+
     # Returns a string with a chunk of the contents that the user could read
     # in the given number of minutes.
     # If called again, `reading_chunk` should return the next chunk, skipping
