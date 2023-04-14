@@ -19,6 +19,6 @@ To learn and understand this, I am going to:
 
 [x] Design a single-class program.
 
-[ ] **Test drive a system of classes.**
+[x] **Test drive a system of classes.**
 
 [ ] Design a system of classes.
